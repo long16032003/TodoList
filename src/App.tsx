@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Todolist from './components/Todolist';
@@ -14,6 +14,8 @@ function App() {
   var todo = localStorage.getItem('todo');
   const [notelist, setNotelist] = useState<item[]>(JSON.parse(todo || ''))    //Lưu các mục todo
   const [title, setTitle] = useState<string>('')    //Lữu text khi nhập vào input
+
+  
   const handClickAdd = () => {
     if (title.trim() !== '') {   //không thêm khoảng trống
       const newTodo: item = { id: Date.now(), text: title, complete: false }
@@ -21,7 +23,7 @@ function App() {
       setTitle('')
     }
   }
-
+  
   //Cập nhật complete khi click vào mục todo đã hoàn thành
   const handleClickCheck = (id: number) => {
     setNotelist(
@@ -60,6 +62,7 @@ function App() {
     )
   }
 
+  
   return (
     <>
       <div className='App w-10/12 m-auto h-[700px] bg-orange-200 '>
@@ -72,9 +75,9 @@ function App() {
             placeholder=' Nhập công việc... '
             value={title}
             onChange={(e) => setTitle(e.target.value)} />
-          <button onClick={handClickAdd} className='w-1/12 border-2 border-neutral-700 bg-emerald-500 text-white p-3 font-bold'>Thêm</button>
+          <button onClick={handClickAdd}  className='w-1/12 border-2 border-neutral-700 bg-emerald-500 text-white p-3 font-bold'>Thêm</button>
         </div>
-        <Todolist notelist={notelist} handleClickCheck={handleClickCheck} handleClickExit={handleClickExit}/>
+        <Todolist notelist={notelist} setNotelist={setNotelist} handleClickCheck={handleClickCheck} handleClickExit={handleClickExit}/>
       </div>
     </>
   )
